@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,5 +8,8 @@
 </head>
 <body>
 Hello world!
+<p>
+    <img src="{% static '/app1/image.png' %}" alt="image">
+</p>
 </body>
 </html>
