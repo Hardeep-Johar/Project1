@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+LOCAL = True
 from pathlib import Path
 import os
 import dj_database_url
@@ -22,21 +23,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-%-_qorwt6oceo!^x3w5bsmltil9(8@e6e-#+amd_(g%g*#^4sl"
-SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
+if LOCAL:
+    SECRET_KEY = "django-insecure-%-_qorwt6oceo!^x3w5bsmltil9(8@e6e-#+amd_(g%g*#^4sl"
+else:
+    SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-DEBUG = 'RENDER' not in os.environ
 
 if DEBUG:
     ALLOWED_HOSTS =[]
 else:
     ALLOWED_HOSTS = ["webapps1.onrender.com", '127.0.0.1']
 
-    RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-    if RENDER_EXTERNAL_HOSTNAME:    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-DEBUG = True
+#    RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+#    if RENDER_EXTERNAL_HOSTNAME:    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,7 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'app1.apps.App1Config',
 ]
-if DEBUG:
+if LOCAL:
 
     MIDDLEWARE = [
         "django.middleware.security.SecurityMiddleware",
@@ -95,7 +97,7 @@ WSGI_APPLICATION = "Project1.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-if DEBUG:
+if LOCAL:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -109,9 +111,6 @@ else:
 
     # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
-DATABASES = {
-    'default': dj_database_url.config(default='postgresql://postgres:postgres@localhost:5432/webapps1',
-                                      conn_max_age=600)}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -139,11 +138,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "/static/"
-if not DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+#    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
 
 # Default primary key field type
