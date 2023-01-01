@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-LOCAL = True
+LOCAL = False
 from pathlib import Path
 import os
 import dj_database_url
@@ -32,7 +32,7 @@ else:
 DEBUG = True
 
 if DEBUG:
-    ALLOWED_HOSTS =[]
+    ALLOWED_HOSTS = ["webapps1.onrender.com", '127.0.0.1']
 else:
     ALLOWED_HOSTS = ["webapps1.onrender.com", '127.0.0.1']
 
