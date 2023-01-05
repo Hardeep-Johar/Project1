@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-LOCAL = False
+LOCAL = True
 from pathlib import Path
 import os
 import dj_database_url
@@ -50,8 +50,8 @@ INSTALLED_APPS = [
     #"django.contrib.staticfiles",
     'app1.apps.App1Config',
 ]
-if LOCAL:
 
+if LOCAL:
     MIDDLEWARE = [
         "django.middleware.security.SecurityMiddleware",
         "django.contrib.sessions.middleware.SessionMiddleware",
@@ -97,17 +97,12 @@ WSGI_APPLICATION = "Project1.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-if LOCAL:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
-else:
-    DATABASES = {
-        'default': dj_database_url.config(default='postgresql://postgres:postgres@localhost:5432/webapps1',
-                                          conn_max_age=600)}
+}
 
     # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
